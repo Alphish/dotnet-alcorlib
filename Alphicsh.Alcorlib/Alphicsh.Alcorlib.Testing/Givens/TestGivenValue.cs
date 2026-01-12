@@ -3,8 +3,8 @@
 public class TestGivenValue<TValue>
 {
     public string Name { get; }
-    public TValue Value { get; private set; } = default!;
-    protected bool IsValueSet { get; private set; } = false;
+    public TValue Value { get; protected set; } = default!;
+    protected bool IsValueSet { get; set; } = false;
 
     public TestGivenValue(string name)
     {
