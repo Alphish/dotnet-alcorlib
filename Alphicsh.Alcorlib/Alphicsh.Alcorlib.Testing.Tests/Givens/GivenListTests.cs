@@ -2,19 +2,19 @@
 
 namespace Alphicsh.Alcorlib.Testing.Tests.Givens;
 
-public class TestGivenListTests
+public class GivenListTests
 {
     [Fact]
     public void ShouldHaveGivenName()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         Assert.Equal("GivenLorem", given.Name);
     }
 
     [Fact]
     public void ShouldStartWithEmptyList()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         Assert.IsType<List<int>>(given.Value);
         Assert.Empty(given.Value);
     }
@@ -22,7 +22,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldSetDirectValue()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.Of(new List<int> { 123, 456, 789 });
         Assert.Equal(3, given.Value.Count);
         Assert.Equal(123, given.Value[0]);
@@ -33,7 +33,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldAddSingleValue()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.Add(123);
         Assert.Single(given.Value);
         Assert.Equal(123, given.Value[0]);
@@ -42,7 +42,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldAddManyValues()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.Add(123);
         given.Add(456);
         given.Add(789);
@@ -55,7 +55,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldChainManyValues()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.With(123).With(456).With(789);
         Assert.Equal(3, given.Value.Count);
         Assert.Equal(123, given.Value[0]);
@@ -66,7 +66,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldPreventSettingListTwice()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.Of(new List<int>());
 
         Action testAction = () => given.Of(new List<int>());
@@ -76,7 +76,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldPreventSettingListAfterAddingItems()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.Add(123);
 
         Action testAction = () => given.Of(new List<int>());
@@ -86,7 +86,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldAddItemsAfterSettingList()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.Of(new List<int> { 123, 456 });
         given.Add(789);
         Assert.Equal(3, given.Value.Count);
@@ -98,7 +98,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldConfirmEmptyList()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.WithNoItems();
         Assert.IsType<List<int>>(given.Value);
         Assert.Empty(given.Value);
@@ -107,7 +107,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldConfirmNewlySetEmptyList()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.Of(new List<int>());
         given.WithNoItems();
         Assert.IsType<List<int>>(given.Value);
@@ -117,7 +117,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldPreventSettingListAfterConfirmingEmptyList()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.WithNoItems();
 
         Action testAction = () => given.Of(new List<int>());
@@ -127,7 +127,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldPreventAddingItemsAfterConfirmingEmptyList()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.WithNoItems();
 
         Action testAction = () => given.Add(123);
@@ -137,7 +137,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldPreventEmptyConfirmationAfterSettingNonEmptyList()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.Of(new List<int> { 123, 456, 789 });
 
         Action testAction = () => given.WithNoItems();
@@ -147,7 +147,7 @@ public class TestGivenListTests
     [Fact]
     public void ShouldPreventEmptyConfirmationAfterAddingItems()
     {
-        var given = new TestGivenList<int>("GivenLorem");
+        var given = new GivenList<int>("GivenLorem");
         given.Add(123);
 
         Action testAction = () => given.WithNoItems();

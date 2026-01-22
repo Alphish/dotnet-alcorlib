@@ -19,9 +19,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Using Include="System"/>
-    <Using Include="System.Collections.Generic"/>
-    <Using Include="System.Linq"/>
-    <Using Include="System.Threading.Tasks"/>
+    <PackageReference Include="xunit.v3.assert" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="System" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.Linq" />
+    <Using Include="System.Threading.Tasks" />
   </ItemGroup>
 </Project>
