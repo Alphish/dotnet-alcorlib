@@ -1,17 +1,17 @@
 ﻿namespace Alphicsh.Alcorlib.Testing.Givens;
 
-public class TestGivenValue<TValue>
+public class GivenValue<TValue>
 {
     public string Name { get; }
     public TValue Value { get; protected set; } = default!;
-    protected bool IsValueSet { get; set; } = false;
+    public bool IsSet { get; protected set; } = false;
 
-    public TestGivenValue(string name)
+    public GivenValue(string name)
     {
         Name = name;
     }
 
-    public static implicit operator TValue(TestGivenValue<TValue> given) => given.Value;
+    public static implicit operator TValue(GivenValue<TValue> given) => given.Value;
 
     public virtual void Of(TValue value)
     {
@@ -20,16 +20,16 @@ public class TestGivenValue<TValue>
 
     protected void SetValue(TValue value)
     {
-        if (IsValueSet)
+        if (IsSet)
             throw new InvalidOperationException($"The given value of '{Name}' has been already set.");
 
         Value = value;
-        IsValueSet = true;
+        IsSet = true;
     }
 
     public override string ToString()
     {
-        var valueString = IsValueSet ? (Value?.ToString() ?? "null") : "<unset>";
-        return $"{Name} of {valueString}";
+        var valueString = IsSet ? (Value?.ToString() ?? "null") : "<unset>";
+        return $"{Name} = {valueString}";
     }
 }

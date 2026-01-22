@@ -1,15 +1,15 @@
 ﻿namespace Alphicsh.Alcorlib.Testing.Givens;
 
-public class TestGivenList<TItem> : TestGivenValue<List<TItem>>
+public class GivenList<TItem> : GivenValue<List<TItem>>
 {
     protected bool IsConfirmedEmpty { get; set; }
 
-    public TestGivenList(string name) : base(name)
+    public GivenList(string name) : base(name)
     {
         Value = new List<TItem>();
     }
 
-    public virtual TestGivenList<TItem> With(TItem item)
+    public virtual GivenList<TItem> With(TItem item)
     {
         AddItem(item);
         return this;
@@ -26,16 +26,16 @@ public class TestGivenList<TItem> : TestGivenValue<List<TItem>>
         Value.Add(item);
 
         // prevent replacing with another list after adding any item
-        IsValueSet = true;
+        IsSet = true;
     }
 
-    public virtual TestGivenList<TItem> WithNoItems()
+    public virtual GivenList<TItem> WithNoItems()
     {
         if (Value.Count > 0)
             throw new InvalidOperationException($"Cannot mark given list of '{Name}' as having no items, because it already has items.");
 
         IsConfirmedEmpty = true;
-        IsValueSet = true; // prevent replacing with another list after confirming empty
+        IsSet = true; // prevent replacing with another list after confirming empty
         return this;
     }
 }
