@@ -3,6 +3,12 @@ using Xunit.Sdk;
 
 namespace Alphicsh.Alcorlib.Testing.Thens;
 
+public static class ThenResult
+{
+    public static ThenResult<TResult> Of<TResult>(string name, TResult result)
+        => new ThenResult<TResult>(name, result);
+}
+
 public class ThenResult<TResult>
 {
     public string Name { get; }
@@ -15,7 +21,7 @@ public class ThenResult<TResult>
         IsSet = false;
     }
 
-    private ThenResult(string name, TResult result)
+    public ThenResult(string name, TResult result)
     {
         Name = name;
         Result = result;
