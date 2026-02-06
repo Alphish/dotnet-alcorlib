@@ -72,10 +72,13 @@ public class CodeEnumJsonReadTests
     {
         GivenJson.Of("{\"Right\":\"Left\",\"Up\":\"Down\",\"Left\":\"Right\",\"Down\":\"Up\"}");
         WhenDictionaryParse.IsExecuted();
-        Assert.Equal(ThenParsedDictionary.Result[TestDirection.Right], TestDirection.Left);
-        Assert.Equal(ThenParsedDictionary.Result[TestDirection.Up], TestDirection.Down);
-        Assert.Equal(ThenParsedDictionary.Result[TestDirection.Left], TestDirection.Right);
-        Assert.Equal(ThenParsedDictionary.Result[TestDirection.Down], TestDirection.Up);
+
+        ThenParsedDictionary.Indexed()
+            .ShouldHaveEntry(TestDirection.Right, TestDirection.Left)
+            .ShouldHaveEntry(TestDirection.Up, TestDirection.Down)
+            .ShouldHaveEntry(TestDirection.Left, TestDirection.Right)
+            .ShouldHaveEntry(TestDirection.Down, TestDirection.Up)
+            .ShouldHaveNoMoreEntries();
     }
 
     [Fact]
@@ -95,10 +98,10 @@ public class CodeEnumJsonReadTests
     GivenValue<string> GivenJson { get; } = new GivenValue<string>(nameof(GivenJson));
 
     WhenFunction<TestDirection?> WhenDirectionParse { get; }
-    WhenFunction<Dictionary<TestDirection, TestDirection>> WhenDictionaryParse { get; }
+    WhenFunction<IDictionary<TestDirection, TestDirection>> WhenDictionaryParse { get; }
 
     ThenResult<TestDirection?> ThenParsedDirection { get; } = new ThenResult<TestDirection?>(nameof(ThenParsedDirection));
-    ThenResult<Dictionary<TestDirection, TestDirection>> ThenParsedDictionary { get; } = new ThenResult<Dictionary<TestDirection, TestDirection>>(nameof(ThenParsedDictionary));
+    ThenDictionary<TestDirection, TestDirection> ThenParsedDictionary { get; } = new ThenDictionary<TestDirection, TestDirection>(nameof(ThenParsedDictionary));
     ThenResult<JsonException> ThenParseException { get; } = new ThenResult<JsonException>(nameof(ThenParseException));
 
     public CodeEnumJsonReadTests()
@@ -107,7 +110,7 @@ public class CodeEnumJsonReadTests
             .LinkOutput(ThenParsedDirection)
             .LinkException(ThenParseException);
 
-        WhenDictionaryParse = new WhenFunction<Dictionary<TestDirection, TestDirection>>(nameof(WhenDirectionParse), () => JsonSerializer.Deserialize<Dictionary<TestDirection, TestDirection>>(GivenJson)!)
+        WhenDictionaryParse = new WhenFunction<IDictionary<TestDirection, TestDirection>>(nameof(WhenDirectionParse), () => JsonSerializer.Deserialize<Dictionary<TestDirection, TestDirection>>(GivenJson)!)
             .LinkOutput(ThenParsedDictionary)
             .LinkException(ThenParseException);
     }
