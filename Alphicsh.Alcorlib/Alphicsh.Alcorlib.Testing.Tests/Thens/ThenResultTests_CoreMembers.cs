@@ -5,18 +5,30 @@ namespace Alphicsh.Alcorlib.Testing.Tests.Thens;
 public partial class ThenResultTests
 {
     [Fact]
-    public void ShouldHaveGivenName()
+    public void ShouldBeCreatedUnsetAndWithDefaultResult()
     {
         var thenResult = new ThenResult<int>("ThenLorem");
         Assert.Equal("ThenLorem", thenResult.Name);
+        Assert.Equal(default(int), thenResult.Result);
+        Assert.False(thenResult.IsSet);
     }
 
     [Fact]
-    public void ShouldStartUnsetAndWithDefaultResult()
+    public void ShouldBeCreatedWithGivenResult()
     {
-        var thenResult = new ThenResult<int>("ThenLorem");
-        Assert.Equal(default(int), thenResult.Result);
-        Assert.False(thenResult.IsSet);
+        var thenResult = new ThenResult<int>("ThenLorem", 123);
+        Assert.Equal("ThenLorem", thenResult.Name);
+        Assert.Equal(123, thenResult.Result);
+        Assert.True(thenResult.IsSet);
+    }
+
+    [Fact]
+    public void ShouldBeCreatedStaticallyWithGivenResult()
+    {
+        var thenResult = ThenResult.Of("ThenLorem", 123);
+        Assert.Equal("ThenLorem", thenResult.Name);
+        Assert.Equal(123, thenResult.Result);
+        Assert.True(thenResult.IsSet);
     }
 
     [Fact]

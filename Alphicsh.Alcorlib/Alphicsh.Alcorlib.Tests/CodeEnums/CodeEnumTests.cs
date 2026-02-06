@@ -1,3 +1,5 @@
+using Alphicsh.Alcorlib.Testing.Thens;
+
 namespace Alphicsh.Alcorlib.Tests.CodeEnums;
 
 public class CodeEnumTests
@@ -5,21 +7,25 @@ public class CodeEnumTests
     [Fact]
     public void ShouldListAllDirections()
     {
-        var values = TestDirection.AvailableValues.ToList();
-        Assert.Equal(values[0], TestDirection.Right);
-        Assert.Equal(values[1], TestDirection.Up);
-        Assert.Equal(values[2], TestDirection.Left);
-        Assert.Equal(values[3], TestDirection.Down);
+        ThenEnumerable.Of(nameof(TestDirection.AvailableValues), TestDirection.AvailableValues)
+            .Enumerated()
+            .ShouldYield(TestDirection.Right)
+            .ShouldYield(TestDirection.Up)
+            .ShouldYield(TestDirection.Left)
+            .ShouldYield(TestDirection.Down)
+            .ShouldEnd();
     }
 
     [Fact]
     public void ShouldMatchAllAliases()
     {
-        var values = TestDirection.AvailableValues.ToList();
-        Assert.Equal(values[0], TestDirection.East);
-        Assert.Equal(values[1], TestDirection.North);
-        Assert.Equal(values[2], TestDirection.West);
-        Assert.Equal(values[3], TestDirection.South);
+        ThenEnumerable.Of(nameof(TestDirection.AvailableValues), TestDirection.AvailableValues)
+            .Enumerated()
+            .ShouldYield(TestDirection.Right)
+            .ShouldYield(TestDirection.Up)
+            .ShouldYield(TestDirection.Left)
+            .ShouldYield(TestDirection.Down)
+            .ShouldEnd();
     }
 
     // -----
