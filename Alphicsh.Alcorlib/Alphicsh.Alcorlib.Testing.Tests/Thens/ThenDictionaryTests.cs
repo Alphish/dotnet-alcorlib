@@ -1,9 +1,8 @@
 ﻿using Alphicsh.Alcorlib.Testing.Thens;
-using Xunit.Sdk;
 
 namespace Alphicsh.Alcorlib.Testing.Tests.Thens;
 
-public class ThenDictionaryTests
+public class ThenDictionaryTests : BaseResultTests
 {
     // --------
     // Creation
@@ -58,7 +57,7 @@ public class ThenDictionaryTests
     public void ShouldIndexEmptyCollection()
     {
         var thenResult = new ThenDictionary<string, int>("ThenLorem", new Dictionary<string, int>());
-        AssertIndexCheckPasses(() => thenResult.Indexed().ShouldHaveNoMoreEntries());
+        AssertCheckPasses(() => thenResult.Indexed().ShouldHaveNoMoreEntries());
     }
 
     [Fact]
@@ -68,7 +67,7 @@ public class ThenDictionaryTests
         {
             ["one"] = 1,
         });
-        AssertIndexCheckPasses(() => thenResult.Indexed()
+        AssertCheckPasses(() => thenResult.Indexed()
             .ShouldHaveEntry("one", 1)
             .ShouldHaveNoMoreEntries()
         );
@@ -83,7 +82,7 @@ public class ThenDictionaryTests
             ["two"] = 2,
             ["three"] = 3,
         });
-        AssertIndexCheckPasses(() => thenResult.Indexed()
+        AssertCheckPasses(() => thenResult.Indexed()
             .ShouldHaveEntry("one", 1)
             .ShouldHaveEntry("two", 2)
             .ShouldHaveEntry("three", 3)
@@ -100,7 +99,7 @@ public class ThenDictionaryTests
             ["two"] = 2,
             ["three"] = 3,
         });
-        AssertIndexCheckPasses(() => thenResult.Indexed()
+        AssertCheckPasses(() => thenResult.Indexed()
             .ShouldHaveEntry("two", 2)
             .ShouldHaveEntry("one", 1)
             .ShouldHaveEntry("three", 3)
@@ -117,7 +116,7 @@ public class ThenDictionaryTests
             ["two"] = 2,
             ["three"] = 3,
         });
-        AssertIndexCheckPasses(() => thenResult.Indexed()
+        AssertCheckPasses(() => thenResult.Indexed()
             .ShouldHaveEntry("two", 2)
             .ShouldHaveEntry("one", 1)
             .ShouldHaveEntry("three", 3)
@@ -136,7 +135,7 @@ public class ThenDictionaryTests
             ["two"] = 2,
             ["three"] = 3,
         });
-        AssertIndexCheckFails(() => thenResult.Indexed().ShouldHaveNoMoreEntries());
+        AssertCheckFails(() => thenResult.Indexed().ShouldHaveNoMoreEntries());
     }
 
     [Fact]
@@ -148,7 +147,7 @@ public class ThenDictionaryTests
             ["two"] = 2,
             ["three"] = 3,
         });
-        AssertIndexCheckFails(() => thenResult.Indexed()
+        AssertCheckFails(() => thenResult.Indexed()
             .ShouldHaveEntry("one", 1)
             .ShouldHaveEntry("two", 2)
             .ShouldHaveEntry("one", 1)
@@ -165,7 +164,7 @@ public class ThenDictionaryTests
             ["two"] = 2,
             ["three"] = 3,
         });
-        AssertIndexCheckFails(() => thenResult.Indexed().ShouldHaveEntry("four", 4));
+        AssertCheckFails(() => thenResult.Indexed().ShouldHaveEntry("four", 4));
     }
 
     [Fact]
@@ -177,29 +176,6 @@ public class ThenDictionaryTests
             ["two"] = 2,
             ["three"] = 3,
         });
-        AssertIndexCheckFails(() => thenResult.Indexed().ShouldHaveEntry("one", 11));
-    }
-
-    // ------
-    // Checks
-    // ------
-
-    private void AssertIndexCheckPasses<TKey, TValue>(Func<ThenIndex<TKey, TValue>> check)
-        where TKey : notnull
-    {
-        try
-        {
-            check();
-        }
-        catch (XunitException)
-        {
-            Assert.Fail($"Expected the check to pass but it didn't.");
-        }
-    }
-
-    private void AssertIndexCheckFails<TKey, TValue>(Func<ThenIndex<TKey, TValue>> check)
-        where TKey : notnull
-    {
-        Assert.ThrowsAny<XunitException>(check);
+        AssertCheckFails(() => thenResult.Indexed().ShouldHaveEntry("one", 11));
     }
 }
