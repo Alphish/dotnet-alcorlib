@@ -34,10 +34,10 @@ public class CodeEnumJsonWriteTests
             [TestDirection.Down] = TestDirection.Up,
         });
         WhenDictionaryWrite.IsExecuted();
-        Assert.Contains("\"Right\":\"Left\"", ThenJson.Result);
-        Assert.Contains("\"Up\":\"Down\"", ThenJson.Result);
-        Assert.Contains("\"Left\":\"Right\"", ThenJson.Result);
-        Assert.Contains("\"Down\":\"Up\"", ThenJson.Result);
+        ThenJson.ShouldContain("\"Right\":\"Left\"");
+        ThenJson.ShouldContain("\"Up\":\"Down\"");
+        ThenJson.ShouldContain("\"Left\":\"Right\"");
+        ThenJson.ShouldContain("\"Down\":\"Up\"");
     }
 
     // -----
@@ -50,14 +50,14 @@ public class CodeEnumJsonWriteTests
     private WhenFunction<string> WhenDirectionWrite { get; }
     private WhenFunction<string> WhenDictionaryWrite { get; }
 
-    private ThenResult<string> ThenJson { get; } = new ThenResult<string>(nameof(ThenJson));
+    private ThenString ThenJson { get; } = new ThenString(nameof(ThenJson));
 
     public CodeEnumJsonWriteTests()
     {
         WhenDirectionWrite = new WhenFunction<string>(nameof(WhenDirectionWrite), () => JsonSerializer.Serialize(GivenDirection.Value))
-            .LinkOutput(ThenJson);
+            .LinkOutput(ThenJson!);
 
         WhenDictionaryWrite = new WhenFunction<string>(nameof(WhenDictionaryWrite), () => JsonSerializer.Serialize(GivenDictionary.Value))
-            .LinkOutput(ThenJson);
+            .LinkOutput(ThenJson!);
     }
 }
