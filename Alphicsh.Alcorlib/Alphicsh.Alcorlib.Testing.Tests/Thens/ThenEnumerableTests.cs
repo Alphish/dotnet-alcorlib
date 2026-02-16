@@ -1,9 +1,8 @@
 ﻿using Alphicsh.Alcorlib.Testing.Thens;
-using Xunit.Sdk;
 
 namespace Alphicsh.Alcorlib.Testing.Tests.Thens;
 
-public class ThenEnumerableTests
+public class ThenEnumerableTests : BaseResultTests
 {
     // --------
     // Creation
@@ -44,14 +43,14 @@ public class ThenEnumerableTests
     public void ShouldEnumerateEmptyCollection()
     {
         var thenResult = new ThenEnumerable<int>("ThenLorem", []);
-        AssertEnumeratorCheckPasses(() => thenResult.Enumerated().ShouldEnd());
+        AssertCheckPasses(() => thenResult.Enumerated().ShouldEnd());
     }
 
     [Fact]
     public void ShouldEnumerateSingleItemCollection()
     {
         var thenResult = new ThenEnumerable<int>("ThenLorem", [123]);
-        AssertEnumeratorCheckPasses(() => thenResult.Enumerated()
+        AssertCheckPasses(() => thenResult.Enumerated()
             .ShouldYield(123)
             .ShouldEnd()
         );
@@ -61,7 +60,7 @@ public class ThenEnumerableTests
     public void ShouldEnumerateMultiItemCollection()
     {
         var thenResult = new ThenEnumerable<int>("ThenLorem", [123, 456, 789]);
-        AssertEnumeratorCheckPasses(() => thenResult.Enumerated()
+        AssertCheckPasses(() => thenResult.Enumerated()
             .ShouldYield(123)
             .ShouldYield(456)
             .ShouldYield(789)
@@ -73,14 +72,14 @@ public class ThenEnumerableTests
     public void ShouldFailToEndBeforeFirstCollectionItem()
     {
         var thenResult = new ThenEnumerable<int>("ThenLorem", [123, 456, 789]);
-        AssertEnumeratorCheckFails(() => thenResult.Enumerated().ShouldEnd());
+        AssertCheckFails(() => thenResult.Enumerated().ShouldEnd());
     }
 
     [Fact]
     public void ShouldFailToEndBeforeLaterCollectionItem()
     {
         var thenResult = new ThenEnumerable<int>("ThenLorem", [123, 456, 789]);
-        AssertEnumeratorCheckFails(() => thenResult.Enumerated()
+        AssertCheckFails(() => thenResult.Enumerated()
             .ShouldYield(123)
             .ShouldYield(456)
             .ShouldEnd()
@@ -91,7 +90,7 @@ public class ThenEnumerableTests
     public void ShouldFailToYieldEmptyCollectionItem()
     {
         var thenResult = new ThenEnumerable<int>("ThenLorem", []);
-        AssertEnumeratorCheckFails(() => thenResult.Enumerated()
+        AssertCheckFails(() => thenResult.Enumerated()
             .ShouldYield(123)
             .ShouldEnd()
         );
@@ -101,7 +100,7 @@ public class ThenEnumerableTests
     public void ShouldFailToYieldPastFinalCollectionItem()
     {
         var thenResult = new ThenEnumerable<int>("ThenLorem", [123, 456]);
-        AssertEnumeratorCheckFails(() => thenResult.Enumerated()
+        AssertCheckFails(() => thenResult.Enumerated()
             .ShouldYield(123)
             .ShouldYield(456)
             .ShouldYield(789)
@@ -113,7 +112,7 @@ public class ThenEnumerableTests
     public void ShouldFailToYieldFirstItemTwice()
     {
         var thenResult = new ThenEnumerable<int>("ThenLorem", [123, 456, 789]);
-        AssertEnumeratorCheckFails(() => thenResult.Enumerated()
+        AssertCheckFails(() => thenResult.Enumerated()
             .ShouldYield(123)
             .ShouldYield(123)
             .ShouldEnd()
@@ -124,7 +123,7 @@ public class ThenEnumerableTests
     public void ShouldFailToYieldIncorrectItem()
     {
         var thenResult = new ThenEnumerable<int>("ThenLorem", [123, 456, 789]);
-        AssertEnumeratorCheckFails(() => thenResult.Enumerated()
+        AssertCheckFails(() => thenResult.Enumerated()
             .ShouldYield(246)
             .ShouldEnd()
         );
@@ -134,32 +133,11 @@ public class ThenEnumerableTests
     public void ShouldFailToYieldOutOfOrder()
     {
         var thenResult = new ThenEnumerable<int>("ThenLorem", [123, 456, 789]);
-        AssertEnumeratorCheckFails(() => thenResult.Enumerated()
+        AssertCheckFails(() => thenResult.Enumerated()
             .ShouldYield(789)
             .ShouldYield(456)
             .ShouldYield(123)
             .ShouldEnd()
         );
-    }
-
-    // ------
-    // Checks
-    // ------
-
-    private void AssertEnumeratorCheckPasses<TResult>(Func<ThenEnumerator<TResult>> check)
-    {
-        try
-        {
-            check();
-        }
-        catch (XunitException)
-        {
-            Assert.Fail($"Expected the check to pass but it didn't.");
-        }
-    }
-
-    private void AssertEnumeratorCheckFails<TResult>(Func<ThenEnumerator<TResult>> check)
-    {
-        Assert.ThrowsAny<XunitException>(check);
     }
 }

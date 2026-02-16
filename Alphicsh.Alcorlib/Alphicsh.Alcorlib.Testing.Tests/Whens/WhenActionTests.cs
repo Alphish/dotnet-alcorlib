@@ -89,7 +89,7 @@ public class WhenActionTests
     public void ShouldProcessLinkedSuccessSelectorOnSuccess()
     {
         var expectedResult = "WRONG";
-        var thenResult = new ThenResult<string>("ExecutionResult");
+        var thenResult = new ThenString("ExecutionResult");
         var whenAction = new WhenAction("WhenLorem", () => { expectedResult = "CORRECT"; })
             .LinkSuccess(thenResult, () => expectedResult);
 
@@ -101,7 +101,7 @@ public class WhenActionTests
     public void ShouldIgnoreLinkedSuccessSelectorOnFailure()
     {
         var expectedResult = "WRONG";
-        var thenResult = new ThenResult<string>("ExecutionResult");
+        var thenResult = new ThenString("ExecutionResult");
         var whenAction = new WhenAction("WhenLorem", () => { throw new InvalidOperationException(); })
             .LinkSuccess(thenResult, () => expectedResult);
 
@@ -114,7 +114,7 @@ public class WhenActionTests
     {
         var expectedResult = "WRONG";
         var thenSuccess = new ThenResult<bool>("ExecutionSuccess");
-        var thenResult = new ThenResult<string>("ExecutionResult");
+        var thenResult = new ThenString("ExecutionResult");
         var whenAction = new WhenAction("WhenLorem", () => { expectedResult = "CORRECT"; })
             .LinkSuccess(thenSuccess)
             .LinkSuccess(thenResult, () => expectedResult);
@@ -206,7 +206,7 @@ public class WhenActionTests
     [Fact]
     public void ShouldIgnoreLinkedExceptionSelectorOnSuccess()
     {
-        var thenExceptionMessage = new ThenResult<string>("ThrownExceptionMessage");
+        var thenExceptionMessage = new ThenString("ThrownExceptionMessage");
         var whenAction = new WhenAction("WhenLorem", () => { })
             .LinkException(thenExceptionMessage, (exception) => exception.Message);
 
@@ -217,7 +217,7 @@ public class WhenActionTests
     [Fact]
     public void ShouldHandleLinkedExceptionSelectorOnFailure()
     {
-        var thenExceptionMessage = new ThenResult<string>("ThrownExceptionMessage");
+        var thenExceptionMessage = new ThenString("ThrownExceptionMessage");
         var whenAction = new WhenAction("WhenLorem", () => { throw new InvalidOperationException("You shouldn't do that."); })
             .LinkException(thenExceptionMessage, (exception) => exception.Message);
 
@@ -230,7 +230,7 @@ public class WhenActionTests
     [Fact]
     public void ShouldIgnoreLinkedTypedExceptionSelectorOnSuccess()
     {
-        var thenInvalidParamName = new ThenResult<string?>("InvalidParamName");
+        var thenInvalidParamName = new ThenString("InvalidParamName");
         var whenAction = new WhenAction("WhenLorem", () => { })
             .LinkException(thenInvalidParamName, (ArgumentException exception) => exception.ParamName);
 
@@ -241,7 +241,7 @@ public class WhenActionTests
     [Fact]
     public void ShouldHandleLinkedTypedExceptionSelectorOnFailure()
     {
-        var thenInvalidParamName = new ThenResult<string?>("InvalidParamName");
+        var thenInvalidParamName = new ThenString("InvalidParamName");
         var whenAction = new WhenAction("WhenLorem", () => { throw new ArgumentException("The value is bad.", "badParam"); })
             .LinkException(thenInvalidParamName, (ArgumentException exception) => exception.ParamName);
 
@@ -252,8 +252,8 @@ public class WhenActionTests
     [Fact]
     public void ShouldHandleLinkedTypedExceptionSelectorOnlyOfThrownType()
     {
-        var thenInvalidOperationMessage = new ThenResult<string>("ThrownExceptionMessage");
-        var thenInvalidParamName = new ThenResult<string?>("InvalidParamName");
+        var thenInvalidOperationMessage = new ThenString("ThrownExceptionMessage");
+        var thenInvalidParamName = new ThenString("InvalidParamName");
         var whenAction = new WhenAction("WhenLorem", () => { throw new InvalidOperationException("You shouldn't do that."); })
             .LinkException(thenInvalidOperationMessage, (InvalidOperationException exception) => exception.Message)
             .LinkException(thenInvalidParamName, (ArgumentException exception) => exception.ParamName);
@@ -266,7 +266,7 @@ public class WhenActionTests
     [Fact]
     public void ShouldHandleLinkedTypedExceptionSelectorOfDerivedType()
     {
-        var thenInvalidParamName = new ThenResult<string?>("InvalidParamName");
+        var thenInvalidParamName = new ThenString("InvalidParamName");
         var whenAction = new WhenAction("WhenLorem", () => { throw new ArgumentNullException("badParam"); })
             .LinkException(thenInvalidParamName, (ArgumentException exception) => exception.ParamName);
 
@@ -281,7 +281,7 @@ public class WhenActionTests
     {
         var thenSuccess = new ThenResult<bool>("ExecutionSuccess");
         var thenException = new ThenResult<Exception>("ThrownException");
-        var thenInvalidParamName = new ThenResult<string?>("InvalidParamName");
+        var thenInvalidParamName = new ThenString("InvalidParamName");
         var whenAction = new WhenAction("WhenLorem", () => { throw new ArgumentNullException("badParam"); })
             .LinkSuccess(thenSuccess)
             .LinkException(thenException)

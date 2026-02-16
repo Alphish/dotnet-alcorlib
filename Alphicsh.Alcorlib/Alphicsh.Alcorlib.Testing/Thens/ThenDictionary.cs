@@ -16,5 +16,8 @@ public class ThenDictionary<TKey, TValue> : ThenResult<IDictionary<TKey, TValue>
     public ThenDictionary(string name, IDictionary<TKey, TValue> result) : base(name, result) { }
 
     public ThenIndex<TKey, TValue> Indexed()
-        => new ThenIndex<TKey, TValue>(Name, Result);
+    {
+        ShouldBeSet();
+        return new ThenIndex<TKey, TValue>(Name, Result);
+    }
 }

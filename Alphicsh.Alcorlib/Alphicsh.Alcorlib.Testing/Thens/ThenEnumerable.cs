@@ -12,5 +12,8 @@ public class ThenEnumerable<TItem> : ThenResult<IEnumerable<TItem>>
     public ThenEnumerable(string name, IEnumerable<TItem> result) : base(name, result) { }
 
     public ThenEnumerator<TItem> Enumerated()
-        => new ThenEnumerator<TItem>(Name, Result);
+    {
+        ShouldBeSet();
+        return new ThenEnumerator<TItem>(Name, Result);
+    }
 }
