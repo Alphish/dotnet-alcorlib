@@ -53,8 +53,8 @@ public class CodeEnumJsonReadTests
         GivenJson.Of("\"Center\"");
         WhenDirectionParse.IsAttempted();
         ThenParseException.ShouldBeSet();
-        ThenParseExceptionMessage.ShouldContain("cannot be parsed from");
-        ThenParseExceptionMessage.ShouldContain(nameof(TestDirection));
+        ThenParseException.Message.ShouldContain("cannot be parsed from");
+        ThenParseException.Message.ShouldContain(nameof(TestDirection));
     }
 
     [Fact]
@@ -63,8 +63,8 @@ public class CodeEnumJsonReadTests
         GivenJson.Of("123");
         WhenDirectionParse.IsAttempted();
         ThenParseException.ShouldBeSet();
-        ThenParseExceptionMessage.ShouldContain("can only be parsed from a string");
-        ThenParseExceptionMessage.ShouldContain(nameof(TestDirection));
+        ThenParseException.Message.ShouldContain("can only be parsed from a string");
+        ThenParseException.Message.ShouldContain(nameof(TestDirection));
     }
 
     [Fact]
@@ -87,8 +87,8 @@ public class CodeEnumJsonReadTests
         GivenJson.Of("{\"Center\":\"Left\"}");
         WhenDictionaryParse.IsAttempted();
         ThenParseException.ShouldBeSet();
-        ThenParseExceptionMessage.ShouldContain("cannot be parsed from");
-        ThenParseExceptionMessage.ShouldContain(nameof(TestDirection));
+        ThenParseException.Message.ShouldContain("cannot be parsed from");
+        ThenParseException.Message.ShouldContain(nameof(TestDirection));
     }
 
     // -----
@@ -102,19 +102,16 @@ public class CodeEnumJsonReadTests
 
     ThenResult<TestDirection?> ThenParsedDirection { get; } = new ThenResult<TestDirection?>(nameof(ThenParsedDirection));
     ThenDictionary<TestDirection, TestDirection> ThenParsedDictionary { get; } = new ThenDictionary<TestDirection, TestDirection>(nameof(ThenParsedDictionary));
-    ThenResult<JsonException> ThenParseException { get; } = new ThenResult<JsonException>(nameof(ThenParseException));
-    ThenString ThenParseExceptionMessage { get; } = new ThenString(nameof(ThenParseExceptionMessage));
+    ThenException<JsonException> ThenParseException { get; } = new ThenException<JsonException>(nameof(ThenParseException));
 
     public CodeEnumJsonReadTests()
     {
         WhenDirectionParse = new WhenFunction<TestDirection?>(nameof(WhenDirectionParse), () => JsonSerializer.Deserialize<TestDirection>(GivenJson))
             .LinkOutput(ThenParsedDirection)
-            .LinkException(ThenParseException)
-            .LinkException(ThenParseExceptionMessage, (JsonException exception) => exception.Message);
+            .LinkException(ThenParseException);
 
         WhenDictionaryParse = new WhenFunction<IDictionary<TestDirection, TestDirection>>(nameof(WhenDirectionParse), () => JsonSerializer.Deserialize<Dictionary<TestDirection, TestDirection>>(GivenJson)!)
             .LinkOutput(ThenParsedDictionary)
-            .LinkException(ThenParseException)
-            .LinkException(ThenParseExceptionMessage, (JsonException exception) => exception.Message);
+            .LinkException(ThenParseException);
     }
 }

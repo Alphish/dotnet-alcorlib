@@ -259,7 +259,7 @@ public class WhenFunctionTests
     [Fact]
     public void ShouldIgnoreLinkedExceptionOnSuccess()
     {
-        var thenException = new ThenResult<Exception>("ThrownException");
+        var thenException = new ThenException("ThrownException");
         var whenFunction = new WhenFunction<string>("WhenLorem", () => "CORRECT")
             .LinkException(thenException);
 
@@ -270,7 +270,7 @@ public class WhenFunctionTests
     [Fact]
     public void ShouldHandleLinkedExceptionOnFailure()
     {
-        var thenException = new ThenResult<Exception>("ThrownException");
+        var thenException = new ThenException("ThrownException");
         var whenFunction = new WhenFunction<string>("WhenLorem", () => { throw new InvalidOperationException(); })
             .LinkException(thenException);
 
@@ -283,7 +283,7 @@ public class WhenFunctionTests
     [Fact]
     public void ShouldIgnoreLinkedTypedExceptionOnSuccess()
     {
-        var thenException = new ThenResult<InvalidOperationException>("ThrownException");
+        var thenException = new ThenException<InvalidOperationException>("ThrownException");
         var whenFunction = new WhenFunction<string>("WhenLorem", () => "CORRECT")
             .LinkException(thenException);
 
@@ -294,7 +294,7 @@ public class WhenFunctionTests
     [Fact]
     public void ShouldHandleLinkedTypedExceptionOnFailure()
     {
-        var thenException = new ThenResult<InvalidOperationException>("ThrownException");
+        var thenException = new ThenException<InvalidOperationException>("ThrownException");
         var whenFunction = new WhenFunction<string>("WhenLorem", () => { throw new InvalidOperationException(); })
             .LinkException(thenException);
 
@@ -305,8 +305,8 @@ public class WhenFunctionTests
     [Fact]
     public void ShouldHandleLinkedTypedExceptionOnlyOfThrownType()
     {
-        var thenInvalidOperationException = new ThenResult<InvalidOperationException>("ThrownInvalidOperationException");
-        var thenArgumentException = new ThenResult<ArgumentException>("ThrownArgumentException");
+        var thenInvalidOperationException = new ThenException<InvalidOperationException>("ThrownInvalidOperationException");
+        var thenArgumentException = new ThenException<ArgumentException>("ThrownArgumentException");
         var whenFunction = new WhenFunction<string>("WhenLorem", () => { throw new InvalidOperationException(); })
             .LinkException(thenInvalidOperationException)
             .LinkException(thenArgumentException);
@@ -319,7 +319,7 @@ public class WhenFunctionTests
     [Fact]
     public void ShouldHandleLinkedTypedExceptionOfDerivedType()
     {
-        var thenException = new ThenResult<ArgumentException>("ThrownException");
+        var thenException = new ThenException<ArgumentException>("ThrownException");
         var whenFunction = new WhenFunction<string>("WhenLorem", () => { throw new ArgumentNullException(); })
             .LinkException(thenException);
 
@@ -406,7 +406,7 @@ public class WhenFunctionTests
     public void ShouldHandleStackedExceptionProcessingOnFailure()
     {
         var thenSuccess = new ThenResult<bool>("ExecutionSuccess");
-        var thenException = new ThenResult<Exception>("ThrownException");
+        var thenException = new ThenException("ThrownException");
         var thenInvalidParamName = new ThenResult<string?>("InvalidParamName");
         var whenFunction = new WhenFunction<string>("WhenLorem", () => { throw new ArgumentNullException("badParam"); })
             .LinkSuccess(thenSuccess)
